@@ -62,25 +62,29 @@ const repoDisplay = function (repos) {
 repoList.addEventListener("click", function (e) {
   if (e.target.matches("h3")) {
     const repoName = e.target.innerText;
+    // A call to the repDeets function, when the function is clicked the name, description, default branch languages, and url to the repo are displayed
     repoDeets(repoName);
   }
 });
 
+// A function to fetch specific details of the repositories
 const repoDeets = async function (repoName) {
   const getDeets = await fetch(
     `https://api.github.com/repos/${username}/${repoName}`
   );
   const deets = await getDeets.json();
   console.log(deets);
+  //  To fetch the language info specifically for each repo, to then be consolidated to an array to be displayed
   const fetchLanguages = await fetch(deets.languages_url);
   const languageData = await fetchLanguages.json();
   console.log(languageData);
-
+  // empty array to hold keys of the language objects
   const languages = [];
   for (const language in languageData) {
     languages.push(language);
     console.log(languages);
   }
+  //   A call to the function that will tell the webiste how to display repo info.
   repoDeetDisplay(deets, languages);
 };
 
