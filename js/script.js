@@ -4,6 +4,10 @@ const overviewDiv = document.querySelector(".overview");
 const username = "mjdellorusso";
 // Ul of repos on github
 const repoList = document.querySelector(".repo-list");
+// <section> where repo info appears
+const repos = document.querySelector(".repos");
+// <section> where hidden repo data is
+const repoData = document.querySelector(".repo-data");
 
 // async function to fetch user info ex: pic, name, bio, etc
 const getGitHubInfo = async function () {
@@ -53,4 +57,44 @@ const repoDisplay = function (repos) {
     repoItem.innerHTML = `<h3>${repo.name}</h3>`;
     repoList.append(repoItem);
   }
+};
+
+repoList.addEventListener("click", function (e) {
+  if (e.target.matches("h3")) {
+    const repoName = e.target.innerText;
+    repoDeets(repoName);
+  }
+});
+
+const repoDeets = async function (repoName) {
+  const getDeets = await fetch(
+    `https://api.github.com/repos/${username}/${repoName}`
+  );
+  const deets = await getDeets.json();
+  console.log(deets);
+  const fetchLanguages = await fetch(deets.languages_url);
+  const languageData = await fetchLanguages.json();
+  console.log(languageData);
+
+  const languages = [];
+  for (const language in languageData) {
+    languages.push(language);
+    console.log(languages);
+  }
+  repoDeetDisplay(deets, languages);
+};
+
+const repoDeetDisplay = function (deets, languages) {
+  repoData.innerHTML = "";
+  repoData.classList.remove("hide");
+  repos.classList.add("hide");
+  const deetDiv = document.createElement("div");
+  deetDiv.innerHTML = `<h3>Name: ${deets.name}</h3>
+  <p>Description: ${deets.descriptiion}</p>
+  <p>Default Branch: ${deets.default_branch}</p>
+  <p>Languages: ${languages.join(", ")}</p>
+  <a class="visit" href="${
+    deets.html_url
+  }" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`;
+  repoData.append(deetDiv);
 };
