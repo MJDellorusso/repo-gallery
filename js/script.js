@@ -4,10 +4,14 @@ const overviewDiv = document.querySelector(".overview");
 const username = "mjdellorusso";
 // Ul of repos on github
 const repoList = document.querySelector(".repo-list");
-// <section> where repo info appears
+// <section> for displaying the repo gallery
 const repos = document.querySelector(".repos");
-// <section> where hidden repo data is
+// <section> where hidden detailed repo data is
 const repoData = document.querySelector(".repo-data");
+// Back to repo gallery button
+const backToRepos = document.querySelector(".view-repos");
+// Search field for repo gallery
+const filterInput = document.querySelector(".filter-repos");
 
 // async function to fetch user info ex: pic, name, bio, etc
 const getGitHubInfo = async function () {
@@ -94,11 +98,20 @@ const repoDeetDisplay = function (deets, languages) {
   repos.classList.add("hide");
   const deetDiv = document.createElement("div");
   deetDiv.innerHTML = `<h3>Name: ${deets.name}</h3>
-  <p>Description: ${deets.descriptiion}</p>
+  <p>Description: ${deets.description}</p>
   <p>Default Branch: ${deets.default_branch}</p>
   <p>Languages: ${languages.join(", ")}</p>
   <a class="visit" href="${
     deets.html_url
   }" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`;
   repoData.append(deetDiv);
+  backToRepos.classList.remove("hide");
 };
+
+backToRepos.addEventListener("click", function () {
+  // Displays the gallery
+  repos.classList.remove("hide");
+
+  repoData.classList.add("hide");
+  backToRepos.classList.remove("hide");
+});
