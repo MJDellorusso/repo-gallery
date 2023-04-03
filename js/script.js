@@ -55,6 +55,7 @@ const getRepoList = async function () {
 
 // A function to display the repos fetched from the api
 const repoDisplay = function (repos) {
+  filterInput.classList.remove("hide");
   for (const repo of repos) {
     const repoItem = document.createElement("li");
     repoItem.classList.add("repo");
@@ -88,7 +89,7 @@ const repoDeets = async function (repoName) {
     languages.push(language);
     console.log(languages);
   }
-  //   A call to the function that will tell the webiste how to display repo info.
+  //   A call to the function that will tell the webiste how to display specific repo info.
   repoDeetDisplay(deets, languages);
 };
 
@@ -114,4 +115,19 @@ backToRepos.addEventListener("click", function () {
 
   repoData.classList.add("hide");
   backToRepos.classList.remove("hide");
+});
+
+filterInput.addEventListener("input", function (e) {
+  const input = e.target.value;
+  const allRepos = document.querySelectorAll(".repo");
+  const searchValue = input.toLowerCase();
+
+  for (const repo of allRepos) {
+    const lowerCaseRepo = repo.innerText.toLowerCase();
+    if (lowerCaseRepo.includes(searchValue)) {
+      repo.classList.remove("hide");
+    } else {
+      repo.classList.add("hide");
+    }
+  }
 });
