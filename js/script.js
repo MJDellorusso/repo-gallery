@@ -2,6 +2,8 @@
 const overview = document.querySelector(".overview");
 // Github user name
 const username = "mjdellorusso";
+// UL to show all repos
+const repoList = document.querySelector(".repo-list");
 
 // Async function to fetch profile info from github api
 const getProfile = async function () {
