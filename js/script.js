@@ -75,19 +75,21 @@ const getRepoDetails = async function (repoName) {
   );
   const repoInfo = await fetchDetails.json();
   console.log(repoInfo);
-
+  // Fetch to retreive languages used in each repo
   const fetchLanguages = await fetch(
     `https://api.github.com/repos/${username}/${repoName}/languages`
   );
+  // languageData is an object
   const languageData = await fetchLanguages.json();
   console.log(languageData);
-
+  // Array to hold language data for each repo
   const languages = [];
-
+  // In the languageData object the keys hold the names of the languages that we want to display
   for (let key in languageData) {
     languages.push(key);
     console.log(languages);
   }
+  // A call to the function that will create a new div and display specific info about a clicked on repo
   displayRepoDetails(repoInfo, languages);
 };
 
@@ -103,5 +105,6 @@ const displayRepoDetails = function (repoInfo, languages) {
   }" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`;
   repoData.append(repoDetailDiv);
   repoData.classList.remove("hide");
+  // Hides all repo tiles
   repoList.classList.add("hide");
 };
