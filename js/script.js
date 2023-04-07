@@ -4,6 +4,10 @@ const overview = document.querySelector(".overview");
 const username = "mjdellorusso";
 // UL to show all repos
 const repoList = document.querySelector(".repo-list");
+// A section with the class of repos where the repo tiles will be displayed
+const repos = document.querySelector(".repos");
+//A section with the class of repo-data where the info about each indicidual repo is held.
+const repoData = document.querySelector(".repo-data");
 
 // Async function to fetch profile info from github api
 const getProfile = async function () {
@@ -42,14 +46,33 @@ const getRepos = async function () {
   const allRepos = await repoFetch.json();
   console.log(allRepos);
   // A call to the function that will display each repos name W/ the getRepos json response as the argument
-  repoInfoDisplay(allRepos);
+  repoTitleDisplay(allRepos);
+};
+// a function to display the names of all repos on github profile in tiles
+const repoTitleDisplay = function (allRepos) {
+  // for each repo of allRepos...
+  for (const repo of allRepos) {
+    const repoTitle = document.createElement("li");
+    repoTitle.classList.add("repo");
+    // The name of the individual repo from the array of repos
+    repoTitle.innerHTML = `<h3>${repo.name}</h3>`;
+    repoList.append(repoTitle);
+  }
 };
 
-const repoInfoDisplay = function (repos) {
-  for (const repo of repos) {
-    const repoInfo = document.createElement("li");
-    repoInfo.classList.add("repo");
-    repoInfo.innerHTML = `<h3>${repo.name}</h3>`;
-    repoList.append(repoInfo);
+// Event listener that captures the <h3> innerText of the repo tile that is clicked to create a varible that will be used to fetch details about the targeted repo
+repoList.addEventListener("click", function (e) {
+  if (e.target.matches("h3")) {
+    const repoName = e.target.innerText;
+    // A call to the async function that will fetch the repo details after the click event acquires the repo name
+    getRepoDetails(repoName);
   }
+});
+// A function to fetch the details of a clicked on repo
+const getRepoDetails = async function (repoName) {
+  const fetchDetails = await fetch(
+    `https://api.github.com/repos/owner${username}/${repoName}`
+  );
+  const repoInfo = await fetchDetails.json();
+  console.log(repoInfo);
 };
