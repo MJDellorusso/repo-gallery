@@ -6,7 +6,7 @@ const username = "mjdellorusso";
 const repoList = document.querySelector(".repo-list");
 // A section with the class of repos where the repo tiles will be displayed
 const repos = document.querySelector(".repos");
-//A section with the class of repo-data where the info about each indicidual repo is held.
+// A section with the class of repo-data where the info about each individual repo is held.
 const repoData = document.querySelector(".repo-data");
 
 // Async function to fetch profile info from github api
@@ -94,8 +94,11 @@ const getRepoDetails = async function (repoName) {
 };
 
 const displayRepoDetails = function (repoInfo, languages) {
+  // Clears the section each time
   repoData.innerHTML = "";
+  // Creates the div that will hold repo details
   const repoDetailDiv = document.createElement("div");
+  // Populates the div with the HTML to show the details
   repoDetailDiv.innerHTML = `<h3>Name: ${repoInfo.name}</h3>
   <p>Description: ${repoInfo.description}</p>
   <p>Default Branch: ${repoInfo.default_branch}</p>
@@ -103,7 +106,9 @@ const displayRepoDetails = function (repoInfo, languages) {
   <a class="visit" href="${
     repoInfo.html_url
   }" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>`;
+  // Adds the div to the section
   repoData.append(repoDetailDiv);
+  // Revels the div to the user
   repoData.classList.remove("hide");
   // Hides all repo tiles
   repoList.classList.add("hide");
