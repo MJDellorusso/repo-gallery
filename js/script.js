@@ -4,10 +4,14 @@ const overview = document.querySelector(".overview");
 const username = "mjdellorusso";
 // UL to show all repos
 const repoList = document.querySelector(".repo-list");
-// A section with the class of repos where the repo tiles will be displayed
-const repos = document.querySelector(".repos");
+// A section with the class of repos where the repo tiles UL will be displayed
+const repoSection = document.querySelector(".repos");
 // A section with the class of repo-data where the info about each individual repo is held.
 const repoData = document.querySelector(".repo-data");
+// Button that goes back to view of all tiles
+const backToGallery = document.querySelector(".view-repos");
+// The search bar to filter repos by name
+const filterInput = document.querySelector(".filter-repos");
 
 // Async function to fetch profile info from github api
 const getProfile = async function () {
@@ -50,6 +54,7 @@ const getRepos = async function () {
 };
 // a function to display the names of all repos on github profile in tiles
 const repoTitleDisplay = function (allRepos) {
+  filterInput.classList.remove("hide");
   // for each repo of allRepos...
   for (const repo of allRepos) {
     const repoTitle = document.createElement("li");
@@ -111,5 +116,38 @@ const displayRepoDetails = function (repoInfo, languages) {
   // Revels the div to the user
   repoData.classList.remove("hide");
   // Hides all repo tiles
-  repoList.classList.add("hide");
+  repoSection.classList.add("hide");
+  // Reveals back to gallery button
+  backToGallery.classList.remove("hide");
 };
+// Button that hides the specific repo info and displays the repo tiles again
+backToGallery.addEventListener("click", function () {
+  repoSection.classList.remove("hide");
+  repoData.classList.add("hide");
+  backToGallery.classList.add("hide");
+});
+
+// Event listener that captures the input typed into the search bar
+filterInput.addEventListener("input", function (e) {
+  // Varaible to hold the value typed into the input bar
+  const searchText = filterInput.value;
+  console.log(searchText);
+  // variable to select all the individual repos
+  const repos = document.querySelectorAll(".repo");
+  // Variable to change input text to lower case
+  const lowerCaseSearch = searchText.toLowerCase();
+
+  // For of loop to change the title of the individual repos to lower text to match the search text
+  for (const repo of repos) {
+    // Varaible holding the lower case repo names
+    const lowerCaseRepoText = repo.innerText.toLowerCase();
+    // Conditional statement that compares the input text to the text in the repos name
+    if (lowerCaseRepoText.includes(lowerCaseSearch)) {
+      // If the search text contains a letter in the title of a repo that repo remains visible
+      repo.classList.remove("hide");
+    } else {
+      // If the letter typed is not found in the repo title that repo is hidden
+      repo.classList.add("hide");
+    }
+  }
+});
