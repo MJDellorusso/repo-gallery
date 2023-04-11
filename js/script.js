@@ -130,7 +130,7 @@ backToGallery.addEventListener("click", function () {
 // Event listener that captures the input typed into the search bar
 filterInput.addEventListener("input", function (e) {
   // Varaible to hold the value typed into the input bar
-  const searchText = filterInput.value;
+  const searchText = e.target.value;
   console.log(searchText);
   // variable to select all the individual repos
   const repos = document.querySelectorAll(".repo");
